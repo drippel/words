@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
+import java.util.OptionalInt;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /*
@@ -25,8 +28,7 @@ public class Words2 {
     
     long start = (new Date()).getTime();
     
-    Stream<String> possibles = findPossibles(word2);
-    Stream<String> words = findWords(possibles, word2 );
+    Stream<String> words = findWords(findPossibles(word2), word2 );
     
     long stop = (new Date()).getTime();
     
@@ -37,34 +39,36 @@ public class Words2 {
   
   public static Stream<String> findPossibles( String word ){
 	  
-	  return Dictionary.dictionary().stream().filter(
-	    (p) -> {
-	    	return matchEnds( word.charAt(0), word.charAt(word.length()-1), p);
-	    }
-	  );
-  }
-  
-  public static boolean matchEnds( char begin, char end, String w ){
-      return ( begin == w.charAt(0)) && ( end == w.charAt(w.length()-1) && w.length() >= 5); 
+	  return Dictionary.dictionary().stream()
+	    .filter( (p) -> { return word.charAt(0) == p.charAt(0); }) 
+	    .filter( (p) -> { return word.charAt(word.length()-1) == p.charAt(p.length()-1); })
+		.filter( (p) -> { return p.length() >= 5; });
   }
   
   public static Stream<String> findWords( Stream<String> possibles, String word ){
 	  return possibles.filter( (p) -> { return matchWord( word, p ); });
   }
   
-  public static boolean matchWord( String word, String possible ){
-	  // make sure the first and last match
-	  int posInWord = 0;
-	  for( int posInPos = 0; posInPos < possible.length(); posInPos++ ){
-		char c = possible.charAt(posInPos);
-		
-		posInWord = word.indexOf(c,posInWord);
-		if( posInWord == -1 ){
-			return false;
-		}
-	  }
+  public static boolean matchWord( String w, String possible ){
+	  
+	  StringBuffer word = new StringBuffer(w);
+	  
+	  IntStream positions = possible.chars().map( (c) -> { 
 
-	  return true;
+		int posInWord = word.toString().indexOf(c,0);
+		if( posInWord == -1 ){
+		  return -1;
+		}
+		else {
+		  word.delete(0, posInWord);
+		  return posInWord;
+		}
+	  });
+	  
+	  return !positions.filter( (i) -> { return i == -1; })
+	   .findFirst()
+       .isPresent();
+
   }
   
   

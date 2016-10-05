@@ -6,23 +6,20 @@ import java.util.List;
 
 public class Dictionary {
 	
-	private static final Dictionary instance ;
-	
+	private static final List<String> words ;
+
 	static {
-		instance = load("./resources/enable1.txt");
+		words = load("./resources/enable1.txt");
 	}
 	
 	public static List<String> dictionary(){
-		return new ArrayList<String>(instance.words);
+		return new ArrayList<String>(words);
 	}
 
-	public List<String> words = new ArrayList<String>();
 
-	private static Dictionary load(String file) {
+	private static List<String> load(String file) {
 		
-		Dictionary dict = new Dictionary();
-		
-		dict.words = new ArrayList<String>();
+		List<String> words = new ArrayList<String>();
 
 		// open the file
 		File f = new File("./resources/enable1.txt");
@@ -37,7 +34,7 @@ public class Dictionary {
 			BufferedReader br = new BufferedReader(new FileReader(f));
 
 			for (String line = br.readLine(); line != null; line = br.readLine()) {
-				dict.words.add(line);
+				words.add(line);
 			}
 
 			br.close();
@@ -48,7 +45,7 @@ public class Dictionary {
 			throw new IllegalStateException(msg);
 		}
 		
-		return dict;
+		return words;
 	}
 
 }
