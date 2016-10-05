@@ -28,7 +28,7 @@ public class Words2 {
     
     long start = (new Date()).getTime();
     
-    Stream<String> words = findWords(findPossibles(word2), word2 );
+    Stream<String> words = findWords(findPossibles(word1), word1 );
     
     long stop = (new Date()).getTime();
     
@@ -39,7 +39,8 @@ public class Words2 {
   
   public static Stream<String> findPossibles( String word ){
 	  
-	  return Dictionary.dictionary().stream()
+	  // return Dictionary.dictionary().stream()
+	  return Dictionary.lookup( Character.valueOf( word.charAt(0) )).stream()
 	    .filter( (p) -> { return word.charAt(0) == p.charAt(0); }) 
 	    .filter( (p) -> { return word.charAt(word.length()-1) == p.charAt(p.length()-1); })
 		.filter( (p) -> { return p.length() >= 5; });

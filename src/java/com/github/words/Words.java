@@ -18,8 +18,8 @@ public class Words {
     
     long start = (new Date()).getTime();
 
-    List<String> possibles = findPossibles( word2 ); 
-    List<String> words = findWords( possibles, word2 );
+    List<String> possibles = findPossibles( word1 ); 
+    List<String> words = findWords( possibles, word1 );
 
     long stop = (new Date()).getTime();
     System.out.println( stop - start );
@@ -39,7 +39,7 @@ public class Words {
     List<String> possibles = new ArrayList<String>(); 
     
     
-    for( String w : Dictionary.dictionary() ){
+    for( String w : Dictionary.lookup( Character.valueOf(begin) ) ){
     	if( ( begin == w.charAt(0)) && ( end == w.charAt(w.length()-1)) && w.length() >= 5 ){
     		possibles.add(w);
     	}
