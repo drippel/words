@@ -1,3 +1,5 @@
+package com.github.words;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -15,28 +17,11 @@ import java.util.stream.Stream;
  */
 public class Words2 {
 
+	public static Stream<String> findMatches( String word ){
+		return findWords( findPossibles( word ), word ); 
+	}
 
-  public static void main( String[] args ){
-    System.out.println( "words..." );
-    // qwertyuytresdftyuioknn
-    // gijakjthoijerjidsdfnokg
-    
-    String word1 = "qwertyuytresdftyuioknn" ;
-    String word2 = "gijakjthoijerjidsdfnokg" ;
-    
-    // get the first and last char
-    
-    long start = (new Date()).getTime();
-    
-    Stream<String> words = findWords(findPossibles(word1), word1 );
-    
-    long stop = (new Date()).getTime();
-    
-    words.forEach( (w) -> { System.out.println(w); });
 
-    System.out.println( stop - start );
-  }
-  
   public static Stream<String> findPossibles( String word ){
 	  
 	  // return Dictionary.dictionary().stream()
